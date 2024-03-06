@@ -392,6 +392,7 @@ def is_vectorized_observation(observation: Union[int, np.ndarray], observation_s
         spaces.MultiDiscrete: is_vectorized_multidiscrete_observation,
         spaces.MultiBinary: is_vectorized_multibinary_observation,
         spaces.Dict: is_vectorized_dict_observation,
+        spaces.Sequence: lambda obs, space: False, # just like the others
     }
 
     for space_type, is_vec_obs_func in is_vec_obs_func_dict.items():

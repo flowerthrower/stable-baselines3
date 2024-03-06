@@ -113,6 +113,13 @@ def preprocess_obs(
             preprocessed_obs[key] = preprocess_obs(_obs, observation_space[key], normalize_images=normalize_images)
         return preprocessed_obs  # type: ignore[return-value]
 
+    if isinstance(observation_space, spaces.Sequence):
+        # TODO: maybe add some normalization or stuff
+        if isinstance(obs, th.Tensor):
+            return obs
+        elif isinstance(obs, list):
+            return obs
+
     assert isinstance(obs, th.Tensor), f"Expecting a torch Tensor, but got {type(obs)}"
 
     if isinstance(observation_space, spaces.Box):
@@ -160,6 +167,8 @@ def get_obs_shape(
     elif isinstance(observation_space, spaces.MultiBinary):
         # Number of binary features
         return observation_space.shape
+    elif isinstance(observation_space, spaces.Sequence):
+        return observation_space.feature_space.shape
     elif isinstance(observation_space, spaces.Dict):
         return {key: get_obs_shape(subspace) for (key, subspace) in observation_space.spaces.items()}  # type: ignore[misc]
 

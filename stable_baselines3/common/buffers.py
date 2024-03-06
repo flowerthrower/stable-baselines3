@@ -68,6 +68,8 @@ class BaseBuffer(ABC):
         :param arr:
         :return:
         """
+        if isinstance(arr, list):
+            return [np.squeeze(a, axis=(0)) for a in arr]
         shape = arr.shape
         if len(shape) < 3:
             shape = (*shape, 1)
@@ -744,6 +746,9 @@ class DictRolloutBuffer(RolloutBuffer):
     def reset(self) -> None:
         self.observations = {}
         for key, obs_input_shape in self.obs_shape.items():
+            if key == "circuit":
+                self.observations[key] = [[[] for _ in range(self.n_envs)] for _ in range(self.buffer_size)]
+                continue
             self.observations[key] = np.zeros((self.buffer_size, self.n_envs, *obs_input_shape), dtype=np.float32)
         self.actions = np.zeros((self.buffer_size, self.n_envs, self.action_dim), dtype=np.float32)
         self.rewards = np.zeros((self.buffer_size, self.n_envs), dtype=np.float32)

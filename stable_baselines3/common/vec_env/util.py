@@ -64,6 +64,8 @@ def obs_space_info(obs_space: spaces.Space) -> Tuple[List[str], Dict[Any, Tuple[
         subspaces = obs_space.spaces
     elif isinstance(obs_space, spaces.Tuple):
         subspaces = {i: space for i, space in enumerate(obs_space.spaces)}  # type: ignore[assignment]
+    elif isinstance(obs_space, spaces.Sequence):
+        subspaces = {i: space for i, space in enumerate(obs_space.spaces)}  # type: ignore[assignment]
     else:
         assert not hasattr(obs_space, "spaces"), f"Unsupported structured space '{type(obs_space)}'"
         subspaces = {None: obs_space}  # type: ignore[assignment]
@@ -72,6 +74,10 @@ def obs_space_info(obs_space: spaces.Space) -> Tuple[List[str], Dict[Any, Tuple[
     dtypes = {}
     for key, box in subspaces.items():
         keys.append(key)
-        shapes[key] = box.shape
-        dtypes[key] = box.dtype
+        if isinstance(box, spaces.Sequence):
+            shapes[key] = box.feature_space.shape
+            dtypes[key] = box.feature_space.dtype
+        else:
+            shapes[key] = box.shape
+            dtypes[key] = box.dtype
     return keys, shapes, dtypes
