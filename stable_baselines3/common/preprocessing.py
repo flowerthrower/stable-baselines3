@@ -118,7 +118,7 @@ def preprocess_obs(
         if isinstance(obs, th.Tensor):
             return obs
         elif isinstance(obs, list):
-            return obs
+            return [th.as_tensor(o) for o in obs]
 
     assert isinstance(obs, th.Tensor), f"Expecting a torch Tensor, but got {type(obs)}"
 
