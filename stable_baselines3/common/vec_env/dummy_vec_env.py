@@ -69,6 +69,11 @@ class DummyVecEnv(VecEnv):
             if self.buf_dones[env_idx]:
                 # save final observation where user can get it, then reset
                 self.buf_infos[env_idx]["terminal_observation"] = obs
+                try:
+                    self.buf_infos[env_idx]["terminal_fig_of_mer"] = self.envs[env_idx].calculate_reward()
+                    self.buf_infos[env_idx]["terminal_improvement"] = self.envs[env_idx].calculate_final_improvement()
+                except Exception as e:
+                    pass # ignore
                 obs, self.reset_infos[env_idx] = self.envs[env_idx].reset()
             self._save_obs(env_idx, obs)
         return (self._obs_from_buf(), np.copy(self.buf_rews), np.copy(self.buf_dones), deepcopy(self.buf_infos))
