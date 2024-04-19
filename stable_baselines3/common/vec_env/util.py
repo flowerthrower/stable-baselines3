@@ -75,8 +75,8 @@ def obs_space_info(obs_space: spaces.Space) -> Tuple[List[str], Dict[Any, Tuple[
     for key, box in subspaces.items():
         keys.append(key)
         if isinstance(box, spaces.Sequence):
-            shapes[key] = box.feature_space.shape
-            dtypes[key] = box.feature_space.dtype
+            shapes[key] = ()
+            dtypes[key] = np.int_
         else:
             shapes[key] = box.shape
             dtypes[key] = box.dtype

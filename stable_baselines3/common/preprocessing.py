@@ -230,7 +230,7 @@ def check_for_nested_spaces(obs_space: spaces.Space) -> None:
     if isinstance(obs_space, (spaces.Dict, spaces.Tuple)):
         sub_spaces = obs_space.spaces.values() if isinstance(obs_space, spaces.Dict) else obs_space.spaces
         for sub_space in sub_spaces:
-            if isinstance(sub_space, (spaces.Dict, spaces.Tuple)):
+            if isinstance(sub_space, (spaces.Tuple)): # allowed spaces.Dicts sub-space
                 raise NotImplementedError(
                     "Nested observation spaces are not supported (Tuple/Dict space inside Tuple/Dict space)."
                 )

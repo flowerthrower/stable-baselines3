@@ -746,7 +746,7 @@ class DictRolloutBuffer(RolloutBuffer):
     def reset(self) -> None:
         self.observations = {}
         for key, obs_input_shape in self.obs_shape.items():
-            if key == "circuit":
+            if key == "circuit" or key.startswith("graph"):
                 self.observations[key] = [[[] for _ in range(self.n_envs)] for _ in range(self.buffer_size)]
                 continue
             self.observations[key] = np.zeros((self.buffer_size, self.n_envs, *obs_input_shape), dtype=np.float32)

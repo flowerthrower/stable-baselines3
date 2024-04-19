@@ -254,7 +254,7 @@ class BaseModel(nn.Module):
                 else:
                     obs_ = np.array(obs)
                 vectorized_env = vectorized_env or is_vectorized_observation(obs_, obs_space)
-                if key == "circuit":
+                if key == "circuit" or key.startswith("graph"):
                     observation[key] = np.expand_dims(np.array(obs_), axis=0)
                     continue
                 # Add batch dimension if needed
