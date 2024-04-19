@@ -72,7 +72,7 @@ class DummyVecEnv(VecEnv):
                 self.buf_infos[env_idx]["terminal_observation"] = obs
                 try:
                     self.buf_infos[env_idx]["terminal_fig_of_mer"] = self.envs[env_idx].calculate_reward()
-                    self.buf_infos[env_idx]["terminal_improvement"] = self.envs[env_idx].calculate_final_improvement()
+                    self.buf_infos[env_idx]["terminal_improvement"] = self.envs[env_idx].calculate_improvement()
                 except Exception as e:
                     pass # ignore
                 obs, self.reset_infos[env_idx] = self.envs[env_idx].reset()
